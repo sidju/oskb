@@ -46,7 +46,7 @@ void key_callback(GtkWidget* widget, gpointer data) {
   GtkGrid* grid = GTK_GRID(gtk_widget_get_parent(widget));
   // Match the type
   switch(tmp->type) {
-    case 0:
+    case 0: ;
       // Modifier
       // Instead of tapping, read the toggle button and propagate its state
       gboolean state = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(widget) );
@@ -102,7 +102,7 @@ static void activate(GtkApplication* app, gpointer user_data) {
   gtk_layer_auto_exclusive_zone_enable( GTK_WINDOW(window) );
   // Bind to bottom of screen
   gtk_layer_set_anchor( GTK_WINDOW(window), GTK_LAYER_SHELL_EDGE_BOTTOM, TRUE );
-  gtk_window_resize( GTK_WINDOW(window), 1000, 600);
+  //gtk_window_resize( GTK_WINDOW(window), 1000, 600);
 
 
   // Draw the basics of the ui
