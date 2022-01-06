@@ -6,12 +6,6 @@
 
 static keeb_handle kb_handle;
 static int layer = 0;
-static int mods = 0;
-
-#define SHFT (1 << 0)
-#define CTL (1 << 1)
-#define ALT  (1 << 2)
-#define UI   (1 << 3)
 
 void key_callback(GtkWidget*, gpointer);
 
@@ -19,7 +13,10 @@ void perform_redraw(GtkGrid* grid) {
   // Get each tile in the keyboard in turn and replace it
   for(int i = 0; i < KEYMAP_NR_ROWS; i++) {
     for(int j = 0; j < (sizeof(base_keymap) / (sizeof(key_data) * KEYMAP_NR_ROWS)); j++ ) {
-      gtk_container_remove( GTK_CONTAINER(grid), gtk_grid_get_child_at(grid, j, i) );
+      GtkWidget* child = gtk_grid_get_child_at(grid, j, i);
+      if(child != NULL) {
+        gtk_container_remove( GTK_CONTAINER(grid), child);
+      }
 
       const key_data* tmp = &base_keymap[j][i];
       if(layer == -1) {
@@ -28,11 +25,19 @@ void perform_redraw(GtkGrid* grid) {
       else if(layer == -2) {
         tmp = &sym_keymap[j][i];
       }
-      GtkWidget* key = gtk_button_new_with_label(tmp->label);
+      GtkWidget* key;
+      if(tmp->type == 1) {
+        key = gtk_toggle_button_new_with_label(tmp->label);
+      }
+      else {
+        key = gtk_button_new_with_label(tmp->label);
+      }
       g_signal_connect(key, "clicked", G_CALLBACK(key_callback), (gpointer) tmp);
       gtk_grid_attach( GTK_GRID(grid), key, j, i, tmp->width, 1);
     }
   }
+  // Make it visible
+  gtk_widget_show_all( GTK_WIDGET(grid) );
 }
 void key_callback(GtkWidget* widget, gpointer data) {
   // Cast the data into its real type
@@ -43,30 +48,9 @@ void key_callback(GtkWidget* widget, gpointer data) {
   switch(tmp->type) {
     case 1:
       // Modifier
-      // Instead of tapping, toggle
-      int state = 0;
-      switch(tmp->keycode) {
-        case KEY_LEFTSHIFT:
-          mods ^= SHFT;
-          state = (mods & SHFT);
-          break;
-        case KEY_LEFTCTRL:
-          mods ^= CTL;
-          state = (mods & CTL);
-          break;
-        case KEY_LEFTALT:
-          mods ^= ALT;
-          state = (mods & ALT);
-          break;
-        case KEY_LEFTMETA:
-          mods ^= UI;
-          state = (mods & UI);
-          break;
-        default:
-          break;
-      }
+      // Instead of tapping, read the toggle button and propagate its state
+      gboolean state = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(widget) );
       keeb_set_key(&kb_handle, tmp->keycode, state);
-      // TODO: make the state of the modifier visible
       break;
     case -1:
       // Toggle numbers layer
@@ -103,19 +87,11 @@ static void activate(GtkApplication* app, gpointer user_data) {
   // To hold more than one key we need a grid
   GtkWidget* grid = gtk_grid_new();
   gtk_container_add( GTK_CONTAINER(window), grid);
+  // The redraw is adjusted for a potentially empty grid, so we use that
+  perform_redraw( GTK_GRID(grid) );
 
-  // Read the keymap line by line and key by key
-  for(int i = 0; i < KEYMAP_NR_ROWS; i++) {
-    for(int j = 0 ; j < (sizeof(base_keymap) / (sizeof(key_data) * KEYMAP_NR_ROWS)) ; j++) {
-      const key_data* tmp = &base_keymap[j][i];
-      GtkWidget* key = gtk_button_new_with_label(tmp->label);
-      g_signal_connect(key, "clicked", G_CALLBACK(key_callback), (gpointer) tmp);
-      gtk_grid_attach( GTK_GRID(grid), key, j, i, tmp->width, 1);
-    }
-  }
-
-  // Make it visible
-  gtk_widget_show_all(window);
+  // And make the window visible
+  gtk_widget_set_visible(window, TRUE);
 }
 
 int start_ui(int argc, char** argv) {
