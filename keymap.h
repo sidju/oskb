@@ -22,7 +22,7 @@ const key_data base_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
   {
     KEY(KEY_ESC,"Esc"),
     KEY(KEY_TAB,"Tab"),
-    MOD(KEY_LEFTSHIFT,"Shft"),
+    MOD(KEY_LEFTSHIFT,"⇧"),
     MOD(KEY_LEFTCTRL,"Ctrl")
   },
   {
@@ -47,7 +47,7 @@ const key_data base_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     KEY(KEY_P,"p"),
     KEY(KEY_U,"u"),
     KEY(KEY_K,"k"),
-    KEY(KEY_BACKSPACE,"Bkspc")
+    KEY(KEY_BACKSPACE,"←")
   },
   {
     KEY(KEY_Y,"y"),
@@ -65,7 +65,7 @@ const key_data base_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     KEY(KEY_G,"g"),
     KEY(KEY_H,"h"),
     KEY(KEY_M,"m"),
-    KEY(KEY_ENTER,"Enter")
+    KEY(KEY_ENTER,"↵")
   },
   {
     KEY(KEY_C,"c"),
@@ -83,13 +83,13 @@ const key_data base_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     KEY(KEY_L,"l"),
     KEY(KEY_S,"s"),
     KEY(KEY_Z,"z"),
-    KEY(KEY_PAGEUP,"PgUp")
+    KEY(KEY_PAGEUP,"PgU")
   },
   {
     KEY(KEY_INSERT,"Ins"),
     KEY(KEY_MINUS,"-"),
-    KEY(KEY_LEFTSHIFT,"Shft"),
-    KEY(KEY_PAGEDOWN,"PgDn")
+    KEY(KEY_LEFTSHIFT,"⇧"),
+    KEY(KEY_PAGEDOWN,"PgD")
   }
 };
 const key_data num_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
@@ -121,7 +121,7 @@ const key_data num_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     KEY(KEY_4,"4"),
     KEY(KEY_U,"u"),
     KEY(KEY_F5,"F5"),
-    KEY(KEY_BACKSPACE,"Bkspc")
+    KEY(KEY_BACKSPACE,"←")
   },
   {
     KEY(KEY_5,"5"),
@@ -139,7 +139,7 @@ const key_data num_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     KEY(KEY_7,"7"),
     KEY(KEY_LEFT,"←"),
     KEY(KEY_F8,"F8"),
-    KEY(KEY_ENTER,"Enter")
+    KEY(KEY_ENTER,"↵")
   },
   {
     KEY(KEY_8,"8"),
@@ -157,7 +157,7 @@ const key_data num_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     KEY(KEY_0,"0"),
     KEY(KEY_RIGHT,"→"),
     KEY(KEY_F11,"F11"),
-    KEY(KEY_HOME,"Home")
+    KEY(KEY_HOME,"Hme")
   },
   {
     KEY(KEY_INSERT,"Ins"),
@@ -195,7 +195,7 @@ const key_data sym_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     SHFT(KEY_4,"$"),
     SHFT(KEY_RIGHTBRACE,"}"),
     KEY(KEY_SLASH,"/"),
-    KEY(KEY_BACKSPACE,"Bkspc")
+    KEY(KEY_BACKSPACE,"←")
   },
   {
     SHFT(KEY_5,"%"),
@@ -213,7 +213,7 @@ const key_data sym_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     SHFT(KEY_7,"&"),
     CMP(KEY_O,"_o"),
     KEY(KEY_M,"m"),
-    KEY(KEY_ENTER,"Enter")
+    KEY(KEY_ENTER,"↵")
   },
   {
     SHFT(KEY_8,"*"),
@@ -231,12 +231,12 @@ const key_data sym_keymap[KEYMAP_NR_COLUMNS][KEYMAP_NR_ROWS] = {
     SHFT(KEY_0,")"),
     SCMP(KEY_GRAVE,"_~"),
     SCMP(KEY_6,"_^"),
-    KEY(KEY_HOME,"Home")
+    KEY(KEY_HOME,"Hme")
   },
   {
     KEY(KEY_INSERT,"Ins"),
     KEY(KEY_MINUS,"-"),
-    KEY(KEY_LEFTSHIFT,"Shft"),
+    KEY(KEY_LEFTSHIFT,"⇧"),
     KEY(KEY_END,"End")
   }
 };
