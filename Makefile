@@ -1,4 +1,4 @@
-TARGET = gpio-keeb
+TARGET = oskb
 LIBS = $(shell pkg-config --libs gtk+-3.0) -lgtk-layer-shell
 
 CC = gcc
