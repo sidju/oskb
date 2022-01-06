@@ -26,14 +26,14 @@ void perform_redraw(GtkGrid* grid) {
         tmp = &sym_keymap[j][i];
       }
       GtkWidget* key;
-      if(tmp->type == 1) {
+      if(tmp->type == 0) {
         key = gtk_toggle_button_new_with_label(tmp->label);
       }
       else {
         key = gtk_button_new_with_label(tmp->label);
       }
       g_signal_connect(key, "clicked", G_CALLBACK(key_callback), (gpointer) tmp);
-      gtk_grid_attach( GTK_GRID(grid), key, j, i, tmp->width, 1);
+      gtk_grid_attach( GTK_GRID(grid), key, j, i, 1, 1);
     }
   }
   // Make it visible
@@ -46,7 +46,7 @@ void key_callback(GtkWidget* widget, gpointer data) {
   GtkGrid* grid = GTK_GRID(gtk_widget_get_parent(widget));
   // Match the type
   switch(tmp->type) {
-    case 1:
+    case 0:
       // Modifier
       // Instead of tapping, read the toggle button and propagate its state
       gboolean state = gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(widget) );
@@ -63,6 +63,26 @@ void key_callback(GtkWidget* widget, gpointer data) {
       if(layer == -2){ layer = 0; }
       else{ layer = -2; }
       perform_redraw(grid);
+      break;
+    case 2:
+      // Shifted normal keycode
+      keeb_set_key(&kb_handle, KEY_LEFTSHIFT, 1);
+      keeb_send_key(&kb_handle, tmp->keycode);
+      keeb_set_key(&kb_handle, KEY_LEFTSHIFT, 0);
+      break;
+    case 3:
+      // Composed lone keycode
+      keeb_set_key(&kb_handle, KEY_COMPOSE, 1);
+      keeb_send_key(&kb_handle, tmp->keycode);
+      keeb_set_key(&kb_handle, KEY_COMPOSE, 0);
+      break;
+    case 4:
+      // Composed shifted keycode
+      keeb_set_key(&kb_handle, KEY_COMPOSE, 1);
+      keeb_set_key(&kb_handle, KEY_LEFTSHIFT, 1);
+      keeb_send_key(&kb_handle, tmp->keycode);
+      keeb_set_key(&kb_handle, KEY_LEFTSHIFT, 0);
+      keeb_set_key(&kb_handle, KEY_COMPOSE, 0);
       break;
     default:
       // Normal keycode
@@ -82,10 +102,14 @@ static void activate(GtkApplication* app, gpointer user_data) {
   gtk_layer_auto_exclusive_zone_enable( GTK_WINDOW(window) );
   // Bind to bottom of screen
   gtk_layer_set_anchor( GTK_WINDOW(window), GTK_LAYER_SHELL_EDGE_BOTTOM, TRUE );
+  gtk_window_resize( GTK_WINDOW(window), 1000, 600);
+
 
   // Draw the basics of the ui
   // To hold more than one key we need a grid
   GtkWidget* grid = gtk_grid_new();
+  gtk_grid_set_column_homogeneous( GTK_GRID(grid), TRUE);
+  gtk_grid_set_row_homogeneous( GTK_GRID(grid), TRUE);
   gtk_container_add( GTK_CONTAINER(window), grid);
   // The redraw is adjusted for a potentially empty grid, so we use that
   perform_redraw( GTK_GRID(grid) );
